@@ -10,7 +10,7 @@ except ImportError:
     has_setuptools = False
 from distutils.core import Distribution
 
-dulwich_version_string = '0.8.7.wavii'
+dulwich_version_string = '0.8.8.wavii'
 
 include_dirs = []
 # Windows MSVC support
@@ -58,8 +58,7 @@ setup(name='dulwich',
       description='Python Git Library',
       keywords='git',
       version=dulwich_version_string,
-      url='http://samba.org/~jelmer/dulwich',
-      download_url='http://samba.org/~jelmer/dulwich/dulwich-%s.tar.gz' % dulwich_version_string,
+      url='https://github.com/wavii/dulwich',
       license='GPLv2 or later',
       author='Jelmer Vernooij',
       author_email='jelmer@samba.org',
@@ -70,6 +69,8 @@ setup(name='dulwich',
 
       All functionality is available in pure Python, but (optional)
       C extensions are also available for better performance.
+
+      (note: this version is based on 0.8.6 + a few more changes)
       """,
       packages=['dulwich', 'dulwich.tests'],
       scripts=['bin/dulwich', 'bin/dul-daemon', 'bin/dul-web'],
