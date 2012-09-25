@@ -619,8 +619,8 @@ class ReceivePackHandler(Handler):
         status = []
         # TODO: more informative error messages than just the exception string
         try:
-            recv = getattr(self.proto, "recv", None)
-            p = self.repo.object_store.add_thin_pack(self.proto.read, recv)
+            p = self.repo.object_store.add_thin_pack(self.proto.read,
+                                                     self.proto.recv)
             status.append(('unpack', 'ok'))
         except all_exceptions, e:
             status.append(('unpack', str(e).replace('\n', '')))

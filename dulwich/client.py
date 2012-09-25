@@ -440,7 +440,7 @@ class TraditionalGitClient(GitClient):
         old_refs, server_capabilities = self._read_refs(proto)
         negotiated_capabilities = self._send_capabilities & server_capabilities
         try:
-            new_refs = determine_wants(dict(old_refs))
+            new_refs = determine_wants(old_refs)
         except:
             proto.write_pkt_line(None)
             raise
@@ -707,7 +707,7 @@ class HttpGitClient(GitClient):
         old_refs, server_capabilities = self._discover_references(
             "git-receive-pack", url)
         negotiated_capabilities = self._send_capabilities & server_capabilities
-        new_refs = determine_wants(dict(old_refs))
+        new_refs = determine_wants(old_refs)
         if new_refs is None:
             return old_refs
         if self.dumb:
@@ -720,7 +720,7 @@ class HttpGitClient(GitClient):
             return new_refs
         objects = generate_pack_contents(have, want)
         if len(objects) > 0:
-            entries, sha = write_pack_objects(req_proto.write_file(), objects)
+            entries, sha = write_pack_objects(req_proto.write_file(), objects, thin_pack=False)
         resp = self._smart_request("git-receive-pack", url,
             data=req_data.getvalue())
         resp_proto = Protocol(resp.read, None)
@@ -779,7 +779,7 @@ def get_transport_and_path(uri, **kwargs):
         return SSHGitClient(parsed.hostname, port=parsed.port,
                             username=parsed.username, **kwargs), parsed.path
     elif parsed.scheme in ('http', 'https'):
-        return HttpGitClient(urlparse.urlunparse(parsed), **kwargs), parsed.path
+        return HttpGitClient(urlparse.urlunparse(parsed)), parsed.path
 
     if parsed.scheme and not parsed.netloc:
         # SSH with no user@, zero or one leading slash.

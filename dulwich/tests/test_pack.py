@@ -181,7 +181,6 @@ class TestPackDeltas(TestCase):
         self._test_roundtrip(self.test_string_empty, self.test_string_big)
 
     def test_overflow_64k(self):
-        self.skipTest("big strings don't work yet")
         self._test_roundtrip(self.test_string_huge, self.test_string_huge)
 
 
